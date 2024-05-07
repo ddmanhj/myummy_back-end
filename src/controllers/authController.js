@@ -5,13 +5,12 @@ const role_account = require("../utils/constant");
 const { isEmpty } = require("lodash");
 
 const authController = {
-  //REGISTER
+  // [POST] api/auth/register
   registerCustomer: async (req, res) => {
     try {
       //mã hóa mật khẩu
       const salt = await bcrypt.genSalt(10);
       const hashed = await bcrypt.hash(req.body.password, salt);
-      //Save to DB
       Customers.create({
         customerName: req.body.customerName,
         email: req.body.email,
@@ -56,7 +55,7 @@ const authController = {
     );
   },
 
-  //Login
+  //[POST] /api/auth/login
   loginCustomer: async (req, res) => {
     try {
       const customer = await Customers.findOne({
@@ -90,18 +89,14 @@ const authController = {
         const refreshToken = await authController.generateRefreshToken(
           customer
         );
-        //thêm token với cookies
-        //cú pháp: res.cookie("tên cookies", "token code")
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
-          // //khi deploy nhớ sẽ secure: true
           secure: true,
           path: "/",
           // sameSite: "none",
         });
         res.cookie("accessToken", accessToken, {
           httpOnly: true,
-          // //khi deploy nhớ sẽ secure: true
           secure: true,
           path: "/",
           // sameSite: "none",
@@ -117,9 +112,6 @@ const authController = {
           accessToken,
           refreshToken,
         };
-        //không lấy password thì dùng đoạn code dưới
-        // const { password, ...others } = customer._doc;
-        //khi có token, hãy copy vào trang chủ jwt phần encoded
         res.status(200).send({ status: true, data: responseAccount });
       }
     } catch (error) {
@@ -127,7 +119,7 @@ const authController = {
     }
   },
 
-  //REDIS
+  //[POST] /api/auth/refresh_token
   requestRefreshToken: async (req, res) => {
     //Lấy refresh token từ customer
     const getRefreshToken = req.headers.authorization;
@@ -147,11 +139,8 @@ const authController = {
         const newAccessToken = await authController.generateAccessToken(
           customer
         );
-        //thêm token với cookies
-        //cú pháp: res.cookie("tên cookies", "token code")
         res.cookie("accessToken", newAccessToken, {
           httpOnly: true,
-          //khi deploy nhớ sẽ secure: true
           secure: true,
           path: "/",
         });
@@ -162,10 +151,10 @@ const authController = {
     );
   },
 
-  //Log out
+  //[POST] /api/auth/logout
   logout: async (req, res) => {
     //Xóa hết các token, refresh token
-    //xóa Cookie\
+    //xóa Cookie
     res.cookie("accessToken", "", {
       expires: new Date(),
     });
@@ -178,12 +167,5 @@ const authController = {
     return res.status(200).send({ data: "logout success", status: true });
   },
 };
-
-//Store token
-//(1) LOCAL STORAGE
-//(2) COOKIES
-
-//(3) REDUX STORE -> ACCESSTOKEN
-// HTTTPONLY COOKIES -> REFRESHTOKEN
 
 module.exports = authController;

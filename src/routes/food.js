@@ -6,6 +6,7 @@ const authController = require("../controllers/authController");
 const middlewareController = require("../middleWare/AuthCustomerController");
 
 //Movie now showing
-router.get("/special_menu", CategoryController.showAllCategory);
+router.get("/menu", CategoryController.showAllCategory);
+router.get("/special_menu/:slug", CategoryController.showFoodOfCategoryById);
 
 module.exports = router;
