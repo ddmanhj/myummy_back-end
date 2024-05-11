@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const { Customers } = require("../models");
 const role_account = require("../utils/constant");
 const { isEmpty } = require("lodash");
+const { getDishesFromWishList } = require("../helpers");
 
 const authController = {
   // [POST] api/auth/register
@@ -101,6 +102,10 @@ const authController = {
           path: "/",
           // sameSite: "none",
         });
+
+        // ADD wish List
+        const wishList = await getDishesFromWishList(customer.id);
+
         const responseAccount = {
           email: customer.email,
           role: customer.role,
@@ -111,6 +116,7 @@ const authController = {
           createdAt: customer.createdAt,
           accessToken,
           refreshToken,
+          wishList: wishList,
         };
         res.status(200).send({ status: true, data: responseAccount });
       }

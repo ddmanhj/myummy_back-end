@@ -3,7 +3,7 @@ const { Category, Dishes } = require("../models");
 class CategoryController {
   // [GET] /api/menu
   async showAllCategory(req, res) {
-    Category.findAll()
+    await Category.findAll()
       .then((category) => {
         res.status(200).send({
           message: "Success",
@@ -19,12 +19,13 @@ class CategoryController {
   }
 
   // [GET] /api/special_menu/:slug
-  async showFoodOfCategoryById(req, res) {
-    Dishes.findAll({
+  async showSpecialFoodOfCategoryById(req, res) {
+    await Dishes.findAll({
       where: {
         categoryID: req.params.slug,
         isPopular: true,
       },
+      attributes: ["id", "dishesName", "price", "urlImageDishes"],
     })
       .then((category) => {
         res.status(200).send({

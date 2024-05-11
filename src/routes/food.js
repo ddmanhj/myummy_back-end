@@ -1,12 +1,25 @@
 const express = require("express");
 const router = express.Router();
-
-const CategoryController = require("../controllers/CategoryController");
-const authController = require("../controllers/authController");
 const middlewareController = require("../middleWare/AuthCustomerController");
 
-//Movie now showing
+const CategoryController = require("../controllers/CategoryController");
+const DishesController = require("../controllers/DishesController");
+
+// Menu
 router.get("/menu", CategoryController.showAllCategory);
-router.get("/special_menu/:slug", CategoryController.showFoodOfCategoryById);
+router.get(
+  "/special_menu/:slug",
+  CategoryController.showSpecialFoodOfCategoryById
+);
+
+// Dishes
+router.get("/all_dishes", DishesController.showAllDishes);
+
+// Show dishes by wish list
+router.get(
+  "/dishes_by_wish_list",
+  middlewareController.verifyToken,
+  DishesController.showDishesByWishList
+);
 
 module.exports = router;
