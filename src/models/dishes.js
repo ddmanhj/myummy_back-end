@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../utils/database");
-const { Category } = require("./index");
+const Category = require("./category");
 
 const SpecialMenu = sequelize.define(
   "dishes",
@@ -14,7 +14,7 @@ const SpecialMenu = sequelize.define(
       type: Sequelize.STRING,
     },
     price: {
-      type: Sequelize.DECIMAL,
+      type: Sequelize.INTEGER,
     },
     description: {
       type: Sequelize.TEXT,

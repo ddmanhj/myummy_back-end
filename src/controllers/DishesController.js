@@ -1,4 +1,4 @@
-const { Dishes, WishList } = require("../models");
+const Dishes = require("../models/dishes");
 const { getDishesFromWishList } = require("../helpers");
 
 class DishesController {
@@ -12,7 +12,7 @@ class DishesController {
         });
       })
       .catch((err) => {
-        res.status(500).send({
+        res.status(400).send({
           message: "Error retrieving dishes",
         });
       });
@@ -28,7 +28,7 @@ class DishesController {
         data: resultDishByWishList,
       });
     } else {
-      res.status(500).send({
+      res.status(400).send({
         status: false,
         data: "Error retrieving dishes by wish list",
       });

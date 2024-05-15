@@ -1,4 +1,5 @@
-const { Category, Dishes } = require("../models");
+const Dishes = require("../models/dishes");
+const Category = require("../models/category");
 
 class CategoryController {
   // [GET] /api/menu
@@ -11,7 +12,7 @@ class CategoryController {
         });
       })
       .catch((err) => {
-        res.status(500).send({
+        res.status(400).send({
           message:
             err.message || "Some error occurred while retrieving category.",
         });
@@ -34,7 +35,7 @@ class CategoryController {
         });
       })
       .catch((err) => {
-        res.status(500).send({
+        res.status(400).send({
           message: "Error retrieving category with id=" + id,
         });
       });

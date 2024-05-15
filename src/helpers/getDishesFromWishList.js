@@ -1,7 +1,7 @@
 // helpers.js
 
-const { WishList } = require("../models"); // Đường dẫn đến model WishList
-const { Dishes } = require("../models"); // Đường dẫn đến model Dishes
+const WishList = require("../models/wishlist"); // Đường dẫn đến model WishList
+const Dishes = require("../models/dishes"); // Đường dẫn đến model Dishes
 
 async function getDishesFromWishList(customerId) {
   try {

@@ -1,7 +1,9 @@
-const transformWishList = require("./tranformsWishList");
 const getDishesFromWishList = require("./getDishesFromWishList");
+const { calculateTotalPrice } = require("./calcCart");
+const { calculateTotalEachDish } = require("./calcCart");
 
 module.exports = {
-  transformWishList,
   getDishesFromWishList,
+  calculateTotalPrice,
+  calculateTotalEachDish,
 };

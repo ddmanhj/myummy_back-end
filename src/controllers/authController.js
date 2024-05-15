@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { Customers } = require("../models");
+const Customers = require("../models/customers");
 const role_account = require("../utils/constant");
 const { isEmpty } = require("lodash");
 const { getDishesFromWishList } = require("../helpers");
@@ -22,7 +22,7 @@ const authController = {
 
       return res.status(200).send({ status: true, data: "Register success" });
     } catch (error) {
-      return res.status(500).json(error.message);
+      return res.status(400).json(error.message);
     }
   },
 
@@ -114,14 +114,13 @@ const authController = {
           urlImageAvatar: customer.urlImageAvatar,
           phone: customer.phone,
           createdAt: customer.createdAt,
-          accessToken,
           refreshToken,
           wishList: wishList,
         };
         res.status(200).send({ status: true, data: responseAccount });
       }
     } catch (error) {
-      return res.status(500).send(error.message);
+      return res.status(400).send(error.message);
     }
   },
 

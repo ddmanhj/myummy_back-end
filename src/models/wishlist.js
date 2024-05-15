@@ -1,6 +1,7 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../utils/database.js");
-const { Dishes, Customers } = require("./index.js");
+const Dishes = require("./dishes.js");
+const Customers = require("./customers.js");
 
 const WishList = sequelize.define(
   "wish_list",

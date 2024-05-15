@@ -1,4 +1,4 @@
-const { WishList } = require("../models");
+const WishList = require("../models/wishlist");
 
 class WishListController {
   // [POST] /api/wish_list
@@ -15,7 +15,7 @@ class WishListController {
         });
       })
       .catch((err) => {
-        res.status(500).send({
+        res.status(400).send({
           status: false,
           data: "Error adding dish to wish list",
         });
@@ -37,7 +37,7 @@ class WishListController {
         });
       })
       .catch((err) => {
-        res.status(500).send({
+        res.status(400).send({
           message: "Error deleting dish in wish list",
         });
       });
