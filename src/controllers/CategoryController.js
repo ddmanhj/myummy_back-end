@@ -36,7 +36,7 @@ class CategoryController {
       })
       .catch((err) => {
         res.status(400).send({
-          message: "Error retrieving category with id=" + id,
+          message: err,
         });
       });
   }
