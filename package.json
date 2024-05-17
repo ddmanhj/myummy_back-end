@@ -3,13 +3,17 @@
   "version": "1.0.0",
   "description": "back-end for Myummmy",
   "main": "index.js",
+  "engines": {
+    "node": "20.12.2",
+    "yarn": "1.22.21"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "manhj",
-  "license": "y",
+  "license": "ISC",
   "private": true,
   "dependencies": {
     "bcrypt": "^5.1.1",
