@@ -15,6 +15,9 @@ router.get(
 // Dishes
 router.get("/all_dishes", DishesController.showAllDishes);
 
+// all list Dishes + filter
+router.get("/all_food", DishesController.allFood);
+
 // Show dishes by wish list
 router.get(
   "/dishes_by_wish_list",
