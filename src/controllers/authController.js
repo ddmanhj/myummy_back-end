@@ -9,6 +9,21 @@ const authController = {
   // [POST] api/auth/register
   registerCustomer: async (req, res) => {
     try {
+      const isCustomer = await Customers.findOne({
+        where: { email: req.body.email },
+      })
+        .then(function (account) {
+          return account;
+        })
+        .catch((err) => {
+          console.log("~~~ error find account: ", err);
+        });
+
+      if (!isEmpty(isCustomer))
+        return res
+          .status(200)
+          .send({ status: false, data: "Account already exists" });
+
       //mã hóa mật khẩu
       const salt = await bcrypt.genSalt(10);
       const hashed = await bcrypt.hash(req.body.password, salt);

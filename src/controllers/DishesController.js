@@ -7,27 +7,42 @@ class DishesController {
     await Dishes.findAll()
       .then((dishes) => {
         res.status(200).send({
-          message: "Success",
+          status: true,
           data: dishes,
         });
       })
       .catch((err) => {
         res.status(400).send({
-          message: "Error retrieving dishes",
+          status: false,
+          data: "Error retrieving dishes",
         });
       });
   }
 
   // [GET] /api/filter
   async allFood(req, res) {
-    const { page, offset, categories, minPrice, maxPrice, rating } = req.query;
-    const categoriesList = [];
-    if (categories) {
-      categories.split(",").forEach((category) => {
-        categoriesList.push(Number(category));
+    const { page, limit, categories, minPrice, maxPrice, rating } = req.query;
+    // raw sẽ là muốn lấy object thuần, không muốn lấy mặc định của sequelize
+    // nest sẽ là lấy data của bảng khác thông quá khóa ngoại
+    const queries = { raw: true, nest: true };
+    const offset = !page || +page < 1 ? 0 : +page - 1;
+    queries.offset = offset * limit;
+
+    await Dishes.findAll({
+      where: { categoryID: categories },
+    })
+      .then((dishes) => {
+        res.status(200).send({
+          status: true,
+          data: dishes,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          status: false,
+          data: "Error retrieving dishes",
+        });
       });
-    }
-    res.status(200).send({ data: "", status: true });
   }
 
   // [POST] /api/dishes_by_wish_list
