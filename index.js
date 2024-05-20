@@ -1,8 +1,8 @@
 const express = require("express");
 const app = express();
-require("dotenv").config();
+// require("dotenv").config();
 const cookieParser = require("cookie-parser");
-let port = process.env.PORT || 8011;
+const PORT = process.env.PORT || 3000;
 
 // Lấy route
 const route = require("./src/routes");
@@ -24,6 +24,6 @@ app.use(
 
 route(app);
 
-app.listen(port, () => {
-  console.log(`App listening on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
 });

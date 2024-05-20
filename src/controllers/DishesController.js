@@ -40,20 +40,23 @@ class DishesController {
     const fLimit = +limit || 10;
     queries.offset = offset * fLimit;
     queries.limit = fLimit;
-    if (reviewStars)
-      query.reviewStars = {
-        [Op.or]: [
-          reviewStars, // Tìm kiếm giá trị chính xác
-          { [Op.between]: [reviewStars - 0.5, reviewStars + 0.5] }, // Tìm kiếm giá trị gần đúng
-        ],
-      };
     if (order) queries.order = [order];
-    if (search) query.dishesName = { [Op.like]: `%${search}%` };
-    if (categoryID) query.categoryID = categoryID;
-    // Only add price to the query if both minPrice and maxPrice are defined
-    if (!isEmpty(price)) {
-      const [minPrice, maxPrice] = price.split(",");
-      query.price = { [Op.between]: [minPrice, maxPrice] };
+    if (search) {
+      query.dishesName = { [Op.like]: `%${search}%` };
+    } else {
+      if (reviewStars)
+        query.reviewStars = {
+          [Op.or]: [
+            reviewStars, // Tìm kiếm giá trị chính xác
+            { [Op.between]: [reviewStars - 0.5, reviewStars + 0.5] }, // Tìm kiếm giá trị gần đúng
+          ],
+        };
+      if (categoryID) query.categoryID = categoryID;
+      // Only add price to the query if both minPrice and maxPrice are defined
+      if (!isEmpty(price)) {
+        const [minPrice, maxPrice] = price.split(",");
+        query.price = { [Op.between]: [minPrice, maxPrice] };
+      }
     }
 
     await Dishes.findAndCountAll({

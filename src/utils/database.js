@@ -2,6 +2,11 @@ const Sequelize = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 
+// Đọc file chứng chỉ SSL
+const sslCert = fs.readFileSync(
+  path.resolve(__dirname, "DigiCertGlobalRootCA.crt.pem")
+);
+
 const sequelize = new Sequelize(
   "myummy",
   "manhj",
@@ -12,8 +17,10 @@ const sequelize = new Sequelize(
     // host: `localhost`,
     port: 3306,
     dialect: "mysql",
-    ssl: {
-      ca: fs.readFileSync(`./DigiCertGlobalRootCA.crt.pem`),
+    dialectOptions: {
+      ssl: {
+        ca: sslCert,
+      },
     },
   }
 );
