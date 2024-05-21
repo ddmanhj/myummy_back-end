@@ -14,10 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const cors = require("cors");
-//tránh bị bug share domain
 app.use(
   cors({
-    origin: "https://myummy-front-end-b5b3eaedeafa.herokuapp.com/",
+    origin: "https://myummy-front-end-b5b3eaedeafa.herokuapp.com",
     credentials: true,
   })
 );
