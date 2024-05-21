@@ -17,7 +17,7 @@ const cors = require("cors");
 //tránh bị bug share domain
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://myummy-front-end-b5b3eaedeafa.herokuapp.com/",
     credentials: true,
   })
 );

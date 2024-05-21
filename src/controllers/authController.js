@@ -109,13 +109,13 @@ const authController = {
           httpOnly: true,
           secure: true,
           path: "/",
-          // sameSite: "none",
+          sameSite: "none",
         });
         res.cookie("accessToken", accessToken, {
           httpOnly: true,
           secure: true,
           path: "/",
-          // sameSite: "none",
+          sameSite: "none",
         });
 
         // ADD wish List
