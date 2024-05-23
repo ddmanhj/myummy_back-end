@@ -1,27 +1,11 @@
 const Dishes = require("../models/dishes");
+const ImageDetailDish = require("../models/imageDetailDish");
 const { getDishesFromWishList } = require("../helpers");
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const { isEmpty } = require("lodash");
 
 class DishesController {
-  // [GET] /api/all_dishes
-  async showAllDishes(req, res) {
-    await Dishes.findAll()
-      .then((dishes) => {
-        res.status(200).send({
-          status: true,
-          data: dishes,
-        });
-      })
-      .catch((err) => {
-        res.status(400).send({
-          status: false,
-          data: "Error retrieving dishes",
-        });
-      });
-  }
-
-  // [GET] /api/filter
+  // [GET] /api/show dish and filter
   async allFood(req, res) {
     const {
       page,
@@ -47,8 +31,12 @@ class DishesController {
       if (reviewStars)
         query.reviewStars = {
           [Op.or]: [
-            reviewStars, // Tìm kiếm giá trị chính xác
-            { [Op.between]: [reviewStars - 0.5, reviewStars + 0.5] }, // Tìm kiếm giá trị gần đúng
+            {
+              [Op.between]: [
+                parseFloat(reviewStars) - 0.5,
+                parseFloat(reviewStars) + 0.5,
+              ],
+            }, // Tìm kiếm giá trị gần đúng
           ],
         };
       if (categoryID) query.categoryID = categoryID;
@@ -62,6 +50,69 @@ class DishesController {
     await Dishes.findAndCountAll({
       where: query,
       ...queries,
+      attributes: [
+        "id",
+        "dishesName",
+        "urlImageDishes",
+        "price",
+        "reviewStars",
+        "saleType",
+        "saleDiscount",
+      ],
+    })
+      .then((dishes) => {
+        res.status(200).send({
+          status: true,
+          data: dishes,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          status: false,
+          data: "Error retrieving dishes",
+        });
+      });
+  }
+
+  // [GET] /dish/:id
+  async dishByID(req, res) {
+    await Dishes.findOne({
+      where: { id: req.params.id },
+      include: [
+        {
+          model: ImageDetailDish,
+          attributes: ["urlImageDetailDish"],
+        },
+      ],
+    })
+      .then((dishes) => {
+        res.status(200).send({
+          status: true,
+          data: dishes,
+        });
+      })
+      .catch((err) => {
+        res.status(400).send({
+          status: false,
+          data: "Error retrieving dishes",
+        });
+      });
+  }
+
+  // [GET] /random_dishes
+  async randomDishes(req, res) {
+    await Dishes.findAll({
+      order: Dishes.sequelize.random(),
+      limit: 4,
+      attributes: [
+        "id",
+        "dishesName",
+        "urlImageDishes",
+        "price",
+        "reviewStars",
+        "saleType",
+        "saleDiscount",
+      ],
     })
       .then((dishes) => {
         res.status(200).send({

@@ -9,13 +9,11 @@ const sslCert = fs.readFileSync(
 
 const sequelize = new Sequelize(
   "myummy",
-  "manhj",
-  // "root",
+  `${process.env.USER_DB_NAME}`,
   `${process.env.DB_PASSWORD}`,
   {
     host: `${process.env.HOST_DB}`,
-    // host: `localhost`,
-    port: 3306,
+    port: `${process.env.POST_DB}`,
     dialect: "mysql",
     dialectOptions: {
       ssl: {

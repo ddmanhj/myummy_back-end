@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const sequelize = require("../utils/database");
 const Category = require("./category");
 
-const SpecialMenu = sequelize.define(
+const Dishes = sequelize.define(
   "dishes",
   {
     id: {
@@ -72,4 +72,4 @@ const SpecialMenu = sequelize.define(
   }
 );
 
-module.exports = SpecialMenu;
+module.exports = Dishes;

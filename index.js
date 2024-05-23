@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-// require("dotenv").config();
+require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 3000;
 
@@ -16,13 +16,21 @@ app.use(cookieParser());
 const cors = require("cors");
 app.use(
   cors({
-    origin: "https://myummy-front-end-b5b3eaedeafa.herokuapp.com",
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
     credentials: true,
   })
 );
 
 route(app);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
+});
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
+io.on("connection", (socket) => {
+  console.log("client connected");
 });

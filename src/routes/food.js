@@ -12,11 +12,12 @@ router.get(
   CategoryController.showSpecialFoodOfCategoryById
 );
 
-// Dishes
-router.get("/all_dishes", DishesController.showAllDishes);
-
 // all list Dishes + filter
 router.get("/all_food", DishesController.allFood);
+// Dishes by ID
+router.get("/dish/:id", DishesController.dishByID);
+// Random dishes
+router.get("/random_dishes", DishesController.randomDishes);
 
 // Show dishes by wish list
 router.get(
