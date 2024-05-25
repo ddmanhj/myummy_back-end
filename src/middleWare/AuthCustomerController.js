@@ -5,8 +5,8 @@ const middlewareController = {
   //verifyToken
   verifyToken: (req, res, next) => {
     let accessToken;
-    if (!isEmpty(req.headers.authorization)) {
-      accessToken = req.headers.authorization;
+    if (!isEmpty(req.headers.Authorization)) {
+      accessToken = req.headers.Authorization;
     } else {
       accessToken = req.cookies.accessToken;
     }

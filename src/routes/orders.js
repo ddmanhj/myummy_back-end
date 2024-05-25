@@ -10,4 +10,10 @@ router.post(
   OrdersController.createOrder
 );
 
+router.post(
+  "/pay-order",
+  middlewareController.verifyToken,
+  OrdersController.payOrder
+);
+
 module.exports = router;

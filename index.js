@@ -16,7 +16,7 @@ app.use(cookieParser());
 const cors = require("cors");
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: `${process.env.CLIENT_URL}`,
     credentials: true,
   })
 );
@@ -26,11 +26,7 @@ route(app);
 const server = app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });
-const io = require("socket.io")(server, {
-  cors: {
-    origin: "*",
-  },
-});
+const io = require("./src/utils/socket").init(server);
 io.on("connection", (socket) => {
   console.log("client connected");
 });

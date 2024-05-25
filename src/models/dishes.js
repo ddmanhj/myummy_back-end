@@ -31,7 +31,7 @@ const Dishes = sequelize.define(
       type: Sequelize.INTEGER,
     },
     reviewStars: {
-      type: Sequelize.DECIMAL,
+      type: Sequelize.TINYINT,
     },
     soldCount: {
       type: Sequelize.INTEGER,

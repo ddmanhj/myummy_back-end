@@ -120,7 +120,6 @@ const authController = {
 
         // ADD wish List
         const wishList = await getDishesFromWishList(customer.id);
-
         const responseAccount = {
           email: customer.email,
           role: customer.role,
@@ -129,6 +128,7 @@ const authController = {
           urlImageAvatar: customer.urlImageAvatar,
           phone: customer.phone,
           createdAt: customer.createdAt,
+          accessToken,
           refreshToken,
           wishList: wishList,
         };

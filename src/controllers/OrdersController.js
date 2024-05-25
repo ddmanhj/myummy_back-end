@@ -2,8 +2,19 @@ const { calculateTotalPrice, calculateTotalEachDish } = require("../helpers");
 const OrderDetail = require("../models/orderDetail");
 const Orders = require("../models/orders");
 const _ = require("lodash");
+const paypal = require("../services/paypal");
 
 class OrdersController {
+  //[GET] /api/orders
+  async payOrder(req, res) {
+    try {
+      const url = await paypal.createOrder();
+      res.status(200).send({ data: url, status: true });
+    } catch (error) {
+      res.status(400).send({ data: error.message, status: false });
+    }
+  }
+
   // [POST] /api/create_order
   async createOrder(req, res) {
     const {

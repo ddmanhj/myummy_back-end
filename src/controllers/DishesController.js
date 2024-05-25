@@ -1,7 +1,7 @@
 const Dishes = require("../models/dishes");
 const ImageDetailDish = require("../models/imageDetailDish");
 const { getDishesFromWishList } = require("../helpers");
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 const { isEmpty } = require("lodash");
 
 class DishesController {

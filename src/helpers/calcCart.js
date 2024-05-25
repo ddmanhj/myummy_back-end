@@ -17,7 +17,6 @@ async function calculateTotalPrice(orderItems) {
 
   // Thực hiện truy vấn SQL
   const [results, metadata] = await sequelize.query(sql);
-  console.log("check cacl", results[0].totalPrice);
   return results[0].totalPrice;
 }
 
