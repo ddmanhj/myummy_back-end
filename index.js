@@ -16,7 +16,7 @@ app.use(cookieParser());
 const cors = require("cors");
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://myummy-front-end-b5b3eaedeafa.herokuapp.com",
     credentials: true,
   })
 );
