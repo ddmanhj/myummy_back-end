@@ -8,8 +8,8 @@ class OrdersController {
   //[GET] /api/orders
   async payOrder(req, res) {
     try {
-      const url = await paypal.createOrder();
-      res.status(200).send({ data: url, status: true });
+      // const url = await paypal.createOrder();
+      res.status(200).send({ data: "url", status: true });
     } catch (error) {
       res.status(400).send({ data: error.message, status: false });
     }
