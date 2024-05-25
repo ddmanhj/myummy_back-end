@@ -16,7 +16,7 @@ app.use(cookieParser());
 const cors = require("cors");
 app.use(
   cors({
-    origin: `${process.env.CLIENT_URL}`,
+    origin: `https://myummy-front-end-b5b3eaedeafa.herokuapp.com`,
     credentials: true,
   })
 );
