@@ -1,4 +1,8 @@
-const { calculateTotalPrice, calculateTotalEachDish } = require("../helpers");
+const {
+  calculateTotalPrice,
+  calculateTotalEachDish,
+  calculateTotalEachDishForPaypal,
+} = require("../helpers");
 const OrderDetail = require("../models/orderDetail");
 const Orders = require("../models/orders");
 const _ = require("lodash");
@@ -7,11 +11,52 @@ const paypal = require("../services/paypal");
 class OrdersController {
   //[GET] /api/orders
   async payOrder(req, res) {
+    const { dishes } = req.body;
+    // total each dish
+    let totalEachDishService = [];
+    await calculateTotalEachDishForPaypal(dishes)
+      .then((total) => {
+        totalEachDishService = total;
+      })
+      .catch((err) => console.log("~~ calc", err));
+    totalEachDishService = totalEachDishService.map((item) => {
+      return {
+        name: item.dishesName,
+        unit_amount: {
+          currency_code: "USD",
+          value: parseFloat(item.totalPrice).toFixed(2).toString(),
+        },
+        quantity: item.quantity.toString(),
+      };
+    });
+
+    // Tính tổng giá trị các sản phẩm
+    const totalItemValue = _.sumBy(
+      totalEachDishService,
+      (item) => parseFloat(item.unit_amount.value) * parseInt(item.quantity)
+    );
+
+    // Discount
+    const discount = 0.0;
+    const totalValueAfterDiscount = totalItemValue - discount;
+
     try {
-      // const url = await paypal.createOrder();
-      res.status(200).send({ data: "url", status: true });
+      const url = await paypal.createOrder(
+        totalEachDishService,
+        totalItemValue,
+        totalValueAfterDiscount.toFixed(2),
+        discount
+      );
+      res.status(200).send({ data: url, status: true });
     } catch (error) {
-      res.status(400).send({ data: error.message, status: false });
+      if (error.response) {
+        console.error("Error creating order:", error.response.data);
+        if (error.response.status === 422) {
+          console.error("Validation error:", error.response.data.details);
+        }
+      } else {
+        console.error("Error:", error.message);
+      }
     }
   }
 
