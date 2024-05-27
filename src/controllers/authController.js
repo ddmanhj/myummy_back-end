@@ -109,13 +109,15 @@ const authController = {
           httpOnly: true,
           secure: true,
           path: "/",
-          sameSite: "none",
+          sameSite: "None",
+          maxAge: 604800000,
         });
         res.cookie("accessToken", accessToken, {
           httpOnly: true,
           secure: true,
           path: "/",
-          sameSite: "none",
+          sameSite: "None",
+          maxAge: 86400000,
         });
 
         // ADD wish List
@@ -163,6 +165,7 @@ const authController = {
           httpOnly: true,
           secure: true,
           path: "/",
+          sameSite: "None",
         });
         return res
           .status(200)
@@ -173,8 +176,7 @@ const authController = {
 
   //[POST] /api/auth/logout
   logout: async (req, res) => {
-    //Xóa hết các token, refresh token
-    //xóa Cookie
+    //Xóa hết token, refresh token
     res.cookie("accessToken", "", {
       expires: new Date(),
     });

@@ -21,10 +21,13 @@ class OrdersController {
       .catch((err) => console.log("~~ calc", err));
     totalEachDishService = totalEachDishService.map((item) => {
       return {
+        sku: item.id,
         name: item.dishesName,
         unit_amount: {
           currency_code: "USD",
-          value: parseFloat(item.totalPrice).toFixed(2).toString(),
+          value: parseFloat(item.price / 25370)
+            .toFixed(2)
+            .toString(),
         },
         quantity: item.quantity.toString(),
       };
@@ -43,11 +46,11 @@ class OrdersController {
     try {
       const url = await paypal.createOrder(
         totalEachDishService,
-        totalItemValue,
+        totalItemValue.toFixed(2),
         totalValueAfterDiscount.toFixed(2),
         discount
       );
-      res.status(200).send({ data: url, status: true });
+      res.status(200).send({ data: { urlPayment: url }, status: true });
     } catch (error) {
       if (error.response) {
         console.error("Error creating order:", error.response.data);
@@ -63,6 +66,7 @@ class OrdersController {
   // [POST] /api/create_order
   async createOrder(req, res) {
     const {
+      token,
       customerID,
       fullName,
       address,
@@ -74,6 +78,9 @@ class OrdersController {
       ward,
       dishes,
     } = req.body;
+    const isSuccessPaymentPaypal = await paypal.capturePayment(token);
+    if (!isSuccessPaymentPaypal?.status === "COMPLETED")
+      return res.status(400).send({ data: "Order failed", status: false });
 
     let totalDishService = 0;
     await calculateTotalPrice(dishes)
@@ -99,9 +106,9 @@ class OrdersController {
     await await Orders.create({
       fullName,
       address,
-      province: province.label,
-      district: district.label,
-      ward: ward.label,
+      province,
+      district,
+      ward,
       email,
       phone,
       message,
@@ -127,7 +134,7 @@ class OrdersController {
         console.log("~~~ error create order", err);
       });
 
-    res.status(200).send({ data: "testing order", status: true });
+    res.status(200).send({ data: "Order success", status: true });
   }
 }
 
