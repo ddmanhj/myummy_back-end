@@ -16,4 +16,18 @@ router.post(
   OrdersController.payOrder
 );
 
+// Get list order
+router.get(
+  "/orders",
+  middlewareController.verifyToken,
+  OrdersController.getOrder
+);
+
+// Get order detail
+router.get(
+  "/order/:id",
+  middlewareController.verifyToken,
+  OrdersController.getOrderDetail
+);
+
 module.exports = router;

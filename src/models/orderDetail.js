@@ -19,7 +19,7 @@ const OrderDetail = sequelize.define(
         key: "id",
       },
     },
-    dishesID: {
+    dishID: {
       type: Sequelize.INTEGER,
       references: {
         model: Dishes,
@@ -35,7 +35,6 @@ const OrderDetail = sequelize.define(
     total: {
       type: Sequelize.INTEGER,
     },
-    urlImageDishes: Sequelize.TEXT,
     couponID: {
       type: Sequelize.INTEGER,
       allowNull: true,
@@ -51,5 +50,14 @@ const OrderDetail = sequelize.define(
     timestamps: false,
   }
 );
+
+Orders.hasMany(OrderDetail, { foreignKey: "orderID" });
+OrderDetail.belongsTo(Orders, { foreignKey: "orderID" });
+
+Dishes.hasMany(OrderDetail, { foreignKey: "dishID" });
+OrderDetail.belongsTo(Dishes, { foreignKey: "dishID" });
+
+Coupon.hasOne(OrderDetail, { foreignKey: "couponID" });
+OrderDetail.belongsTo(Coupon, { foreignKey: "couponID" });
 
 module.exports = OrderDetail;

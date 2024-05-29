@@ -29,7 +29,7 @@ async function calculateTotalEachDish(orderItems) {
 
   // Tạo một chuỗi SQL để tính tổng tiền
   const sql = `
-        SELECT d.price * o.quantity AS totalPrice
+        SELECT d.id, d.price * o.quantity AS totalPrice
         FROM dishes d
         JOIN (
             ${idQuantityPairs}

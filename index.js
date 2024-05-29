@@ -18,8 +18,6 @@ app.use(
   cors({
     origin: "https://myummy-front-end-b5b3eaedeafa.herokuapp.com",
     credentials: true,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Authorization,Content-Type",
   })
 );
 

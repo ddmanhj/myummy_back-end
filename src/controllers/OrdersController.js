@@ -5,11 +5,66 @@ const {
 } = require("../helpers");
 const OrderDetail = require("../models/orderDetail");
 const Orders = require("../models/orders");
+const Coupon = require("../models/coupon");
+const Dishes = require("../models/dishes");
 const _ = require("lodash");
 const paypal = require("../services/paypal");
 
 class OrdersController {
-  //[GET] /api/orders
+  // [GET] /api/orders
+  async getOrder(req, res) {
+    const { page, limit, customerID } = req.query;
+    // raw sẽ là muốn lấy object thuần, không muốn lấy mặc định của sequelize
+    // nest sẽ là lấy data của bảng khác thông quá khóa ngoại
+    const queries = { raw: true, nest: true };
+    const offset = !page || +page < 1 ? 0 : +page - 1;
+    const fLimit = +limit || 10;
+    queries.offset = offset * fLimit;
+    queries.limit = fLimit;
+    await Orders.findAndCountAll({
+      where: { customerID: customerID },
+      ...queries,
+      order: [["createdAt", "DESC"]],
+    })
+      .then((order) => {
+        res.status(200).send({ data: order, status: true });
+      })
+      .catch((err) => {
+        console.log("~~~ error get order", err);
+        res.status(400).send({ data: "Order not found", status: false });
+      });
+  }
+
+  // [GET] /api/orders/:id
+  async getOrderDetail(req, res) {
+    const { id } = req.params;
+    if (!id)
+      return res
+        .status(400)
+        .send({ data: "Order detail not found", status: false });
+    await OrderDetail.findAll({
+      where: { orderID: id },
+      include: [
+        {
+          model: Dishes,
+          attributes: ["dishesName", "price", "urlImageDishes"],
+        },
+        {
+          model: Coupon,
+          attributes: ["couponCode", "discount", "typeDiscount"],
+        },
+      ],
+    })
+      .then((order) => {
+        res.status(200).send({ data: order, status: true });
+      })
+      .catch((err) => {
+        console.log("~~~ error get order detail", err);
+        res.status(400).send({ data: "Order detail not found", status: false });
+      });
+  }
+
+  //[GET] /api/pay-order
   async payOrder(req, res) {
     const { dishes } = req.body;
     // total each dish
@@ -119,7 +174,7 @@ class OrdersController {
         mergedResult.forEach(async (item) => {
           await OrderDetail.create({
             orderID: dish?.id,
-            dishesID: item.id,
+            dishID: item.id,
             quantity: item.quantity,
             subTotal: item.totalPrice,
             total: totalService,

@@ -51,4 +51,7 @@ const Orders = sequelize.define(
   }
 );
 
+Customers.hasMany(Orders, { foreignKey: "customerID" });
+Orders.belongsTo(Customers, { foreignKey: "customerID" });
+
 module.exports = Orders;

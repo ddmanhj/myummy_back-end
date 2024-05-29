@@ -10,7 +10,8 @@ const Coupon = sequelize.define(
       autoIncrement: true,
     },
     couponCode: {
-      type: Sequelize.TEXT,
+      type: Sequelize.STRING,
+      unique: true,
     },
     discount: {
       type: Sequelize.INTEGER,
@@ -19,10 +20,13 @@ const Coupon = sequelize.define(
       type: Sequelize.STRING(50),
       defaultValue: "amount",
     },
+    status: {
+      type: Sequelize.BOOLEAN,
+    },
   },
   {
     tableName: "coupon",
-    timestamps: false,
+    timestamps: true,
   }
 );
 
