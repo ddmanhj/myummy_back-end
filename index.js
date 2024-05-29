@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const redis = require("redis");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const PORT = process.env.PORT || 3000;
@@ -26,7 +27,40 @@ route(app);
 const server = app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });
+
 const io = require("./src/utils/socket").init(server);
+
+let viewers = {};
+let updateQueue = {};
+
 io.on("connection", (socket) => {
-  console.log("client connected");
+  console.log(`A user connected`);
+
+  socket.on("view_item", (dishId) => {
+    if (!viewers[dishId]) {
+      viewers[dishId] = 0;
+    }
+    viewers[dishId]++;
+    updateQueue[dishId] = viewers[dishId];
+  });
+
+  socket.on("leave_item", (dishId) => {
+    if (viewers[dishId]) {
+      viewers[dishId]--;
+      updateQueue[dishId] = viewers[dishId];
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+    // Handle user disconnect logic if necessary
+  });
 });
+
+// Emit updates every 5 seconds
+setInterval(() => {
+  for (const [dishId, count] of Object.entries(updateQueue)) {
+    io.emit("update_viewers", { dishId, count });
+  }
+  updateQueue = {};
+}, 5000);

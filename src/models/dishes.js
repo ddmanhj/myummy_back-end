@@ -27,9 +27,6 @@ const Dishes = sequelize.define(
     quantity: {
       type: Sequelize.INTEGER,
     },
-    reviewCount: {
-      type: Sequelize.INTEGER,
-    },
     reviewStars: {
       type: Sequelize.TINYINT,
     },
