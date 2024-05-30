@@ -29,6 +29,15 @@ const Customers = sequelize.define(
       unique: true,
     },
     address: {
+      type: Sequelize.TEXT,
+    },
+    province: {
+      type: Sequelize.STRING,
+    },
+    district: {
+      type: Sequelize.STRING,
+    },
+    ward: {
       type: Sequelize.STRING,
     },
     role: {

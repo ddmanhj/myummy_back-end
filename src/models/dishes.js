@@ -10,7 +10,7 @@ const Dishes = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    dishesName: {
+    dishName: {
       type: Sequelize.STRING,
     },
     price: {
@@ -20,7 +20,7 @@ const Dishes = sequelize.define(
       type: Sequelize.TEXT,
       allowNull: true,
     },
-    urlImageDishes: {
+    urlImageDish: {
       type: Sequelize.STRING,
       allowNull: true,
     },

@@ -51,7 +51,7 @@ async function calculateTotalEachDishForPaypal(orderItems) {
 
   // Tạo một chuỗi SQL để tính tổng tiền
   const sql = `
-        SELECT d.id, d.dishesName, d.price, o.quantity
+        SELECT d.id, d.dishName, d.price, o.quantity
         FROM dishes d
         JOIN (
             ${idQuantityPairs}

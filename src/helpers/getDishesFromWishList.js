@@ -10,7 +10,7 @@ async function getDishesFromWishList(customerId) {
         customerID: customerId,
       },
     });
-    const dishIds = wishList.map((dish) => dish.dishesID);
+    const dishIds = wishList.map((dish) => dish.dishID);
 
     const dishes = await Dishes.findAll({
       where: {

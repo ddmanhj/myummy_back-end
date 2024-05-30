@@ -47,7 +47,7 @@ class OrdersController {
       include: [
         {
           model: Dishes,
-          attributes: ["dishesName", "price", "urlImageDishes"],
+          attributes: ["dishName", "price", "urlImageDish"],
         },
         {
           model: Coupon,
@@ -77,7 +77,7 @@ class OrdersController {
     totalEachDishService = totalEachDishService.map((item) => {
       return {
         sku: item.id,
-        name: item.dishesName,
+        name: item.dishName,
         unit_amount: {
           currency_code: "USD",
           value: parseFloat(item.price / 25370)

@@ -3,9 +3,9 @@ const WishList = require("../models/wishlist");
 class WishListController {
   // [POST] /api/wish_list
   async addDishToWishList(req, res) {
-    const { dishesID, customerID } = req.body;
+    const { dishID, customerID } = req.body;
     await WishList.create({
-      dishesID,
+      dishID,
       customerID,
     })
       .then((dish) => {
@@ -24,10 +24,10 @@ class WishListController {
 
   // [POST] /api/delete_wish_list
   async deleteDishInWishList(req, res) {
-    const { dishesID, customerID } = req.body;
+    const { dishID, customerID } = req.body;
     await WishList.destroy({
       where: {
-        dishesID,
+        dishID,
         customerID,
       },
     })

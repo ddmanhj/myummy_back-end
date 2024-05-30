@@ -11,7 +11,7 @@ const WishList = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    dishesID: {
+    dishID: {
       type: Sequelize.INTEGER,
       allowNull: false,
       references: {

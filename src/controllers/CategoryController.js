@@ -26,7 +26,7 @@ class CategoryController {
         categoryID: req.params.slug,
         isPopular: true,
       },
-      attributes: ["id", "dishesName", "price", "urlImageDishes"],
+      attributes: ["id", "dishName", "price", "urlImageDish"],
     })
       .then((category) => {
         res.status(200).send({

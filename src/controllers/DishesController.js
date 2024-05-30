@@ -27,7 +27,7 @@ class DishesController {
     queries.limit = fLimit;
     if (order) queries.order = [order];
     if (search) {
-      query.dishesName = { [Op.like]: `%${search}%` };
+      query.dishName = { [Op.like]: `%${search}%` };
     } else {
       if (reviewStars)
         query.reviewStars = {
@@ -53,8 +53,8 @@ class DishesController {
       ...queries,
       attributes: [
         "id",
-        "dishesName",
-        "urlImageDishes",
+        "dishName",
+        "urlImageDish",
         "price",
         "reviewStars",
         "saleType",
@@ -107,8 +107,8 @@ class DishesController {
       limit: 4,
       attributes: [
         "id",
-        "dishesName",
-        "urlImageDishes",
+        "dishName",
+        "urlImageDish",
         "price",
         "reviewStars",
         "saleType",
