@@ -2,6 +2,7 @@ const {
   calculateTotalPrice,
   calculateTotalEachDish,
   calculateTotalEachDishForPaypal,
+  exChangeRate,
 } = require("../helpers");
 const OrderDetail = require("../models/orderDetail");
 const Orders = require("../models/orders");
@@ -74,19 +75,20 @@ class OrdersController {
         totalEachDishService = total;
       })
       .catch((err) => console.log("~~ calc", err));
-    totalEachDishService = totalEachDishService.map((item) => {
-      return {
-        sku: item.id,
-        name: item.dishName,
-        unit_amount: {
-          currency_code: "USD",
-          value: parseFloat(item.price / 25370)
-            .toFixed(2)
-            .toString(),
-        },
-        quantity: item.quantity.toString(),
-      };
-    });
+    totalEachDishService = await Promise.all(
+      totalEachDishService.map(async (item) => {
+        const unitAmount = await exChangeRate(item.price);
+        return {
+          sku: item.id,
+          name: item.dishName,
+          unit_amount: {
+            currency_code: "USD",
+            value: unitAmount,
+          },
+          quantity: item.quantity.toString(),
+        };
+      })
+    );
 
     // Tính tổng giá trị các sản phẩm
     const totalItemValue = _.sumBy(

@@ -1,4 +1,6 @@
+const axios = require("axios");
 const sequelize = require("../utils/database");
+const { isEmpty } = require("lodash");
 
 async function calculateTotalPrice(orderItems) {
   // Tạo các biểu thức SQL cho id và quantity
@@ -64,8 +66,32 @@ async function calculateTotalEachDishForPaypal(orderItems) {
   return results;
 }
 
+async function exChangeRate(totalPrice) {
+  const getKeyAPI = await axios.get(
+    "https://vapi.vnappmob.com/api/request_api_key?scope=exchange_rate"
+  );
+  if (isEmpty(getKeyAPI?.data?.results))
+    return parseFloat(totalPrice) / 25370, tofixed(2).toString();
+  const getCurrentRate = await axios.get(
+    "https://vapi.vnappmob.com/api/v2/exchange_rate/vcb",
+    {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${getKeyAPI?.data?.results}`,
+      },
+    }
+  );
+  if (isEmpty(getCurrentRate?.data?.results))
+    return parseFloat(totalPrice) / 25370, tofixed(2).toString();
+  const getRate = getCurrentRate?.data?.results?.find(
+    (item) => item.currency === "USD"
+  );
+  return (parseFloat(totalPrice) / getRate?.sell).toFixed(2).toString();
+}
+
 module.exports = {
   calculateTotalPrice,
   calculateTotalEachDish,
   calculateTotalEachDishForPaypal,
+  exChangeRate,
 };
