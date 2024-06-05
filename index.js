@@ -7,6 +7,10 @@ const PORT = process.env.PORT || 3000;
 // Lấy route
 const route = require("./src/routes");
 
+// Hoặc sử dụng express.json() với giới hạn kích thước lớn hơn
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
 //xử lý data javascript
 app.use(express.json());
 //sử lý data từ form

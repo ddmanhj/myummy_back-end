@@ -53,10 +53,8 @@ exports.createOrder = async (
         ],
 
         application_context: {
-          return_url:
-            "https://myummy-front-end-b5b3eaedeafa.herokuapp.com/payment",
-          cancel_url:
-            "https://myummy-front-end-b5b3eaedeafa.herokuapp.com/checkout",
+          return_url: "http://localhost:5173/payment",
+          cancel_url: "http://localhost:5173/checkout",
           shipping_preference: "NO_SHIPPING",
           user_action: "PAY_NOW",
           brand_name: "Myummy",
