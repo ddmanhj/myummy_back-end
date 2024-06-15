@@ -53,8 +53,8 @@ exports.createOrder = async (
         ],
 
         application_context: {
-          return_url: `${process.env.clientCLIENT_URL}/payment`,
-          cancel_url: `${process.env.clientCLIENT_URL}/checkout`,
+          return_url: `${process.env.CLIENT_URL}/payment`,
+          cancel_url: `${process.env.CLIENT_URL}/checkout`,
           shipping_preference: "NO_SHIPPING",
           user_action: "PAY_NOW",
           brand_name: "Myummy",
